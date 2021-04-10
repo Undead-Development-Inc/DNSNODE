@@ -6,6 +6,7 @@ public class Settings {
     public static int NetPUSH_port = 65535;
     public static int API_NET_PORT = 65533;
     public static int DB_STORAGE_NET = 3332;
+    public static int NET_SYNC = 9000;
 
 
 
