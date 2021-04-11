@@ -1,9 +1,10 @@
 public class Functions {
 
     public static void main(String[] args){
+        BC_NET_SYNC();
         Start_Miner_APIServer();
         Start_Node_Server();
-        Notify_Node();
+        Notify_MGR();
     }
     public static void Start_Miner_APIServer(){
         Thread Miner_Thread = new Thread(Net::Miner_API);
@@ -17,6 +18,17 @@ public class Functions {
         return;
     }
 
+    public static void BC_NET_SYNC(){
+        Thread Net_Sync = new Thread(Net::Net_Sync);
+        Net_Sync.start();
+        return;
+    }
+
+    public static void Notify_MGR(){
+        Thread Notify = new Thread(Functions::Notify_Node);
+        Notify.start();
+        return;
+    }
 
     public static void Notify_Node(){
         while (true) {
