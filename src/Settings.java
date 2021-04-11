@@ -7,7 +7,9 @@ public class Settings {
     public static int API_NET_PORT = 65533;
     public static int DB_STORAGE_NET = 3332;
     public static int NET_SYNC = 9000;
-
+    public static int NET_NODE_CLIENT = 9001;
+    public static int S_NET_NODE_CLIENT = 9002;
+    public static int Miner_API = 9003;
 
 
     //////////////////////////////////////////////////////////
