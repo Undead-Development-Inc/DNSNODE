@@ -1,6 +1,7 @@
 public class Functions {
 
     public static void main(String[] args){
+        GET_IPS();
         BC_NET_SYNC();
         Start_Miner_APIServer();
         Start_Node_Server();
@@ -27,6 +28,12 @@ public class Functions {
     public static void Notify_MGR(){
         Thread Notify = new Thread(Functions::Notify_Node);
         Notify.start();
+        return;
+    }
+
+    public static void GET_IPS(){
+        Thread IPDB = new Thread(DB::IP_NET);
+        IPDB.start();
         return;
     }
 
