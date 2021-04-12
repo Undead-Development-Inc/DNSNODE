@@ -8,7 +8,7 @@ public class DB {
     public static void IP_NET(){
         while(true) {
             try {
-                Socket socket = new Socket("127.0.0.1", 2000);
+                Socket socket = new Socket("35.175.113.12", 2000);
 
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
