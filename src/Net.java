@@ -64,13 +64,19 @@ public class Net {
     }
 
     public static void C_Net_NODE_TALK(Block nmblock,String Request){
+        ArrayList<String> IP_CURR_ON = new ArrayList<>();
         try {
                 if (Node_IPS.isEmpty()) {
                     throw new Exception("NO NODE IP'S");
                 }
 
                 for (String IP : Node_IPS) {
+                    IP_CURR_ON.add(IP);
+                    System.out.println("TRYING TO CONNECT TO DNS NODE IP: "+ IP);
                     Socket socket = new Socket(IP, Settings.NET_NODE_CLIENT);
+                    System.out.println("CONNECTED TO DNS NODE: "+ IP);
+                    IP_CURR_ON.remove(IP);
+                    socket.setSoTimeout(10);
 
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -113,7 +119,9 @@ public class Net {
 
         }catch (Exception ex){
             System.out.println(ex);
-            System.exit(0);
+            String IP_TOUT = IP_CURR_ON.get(1);
+            System.out.println("ISSUE ON: "+ IP_TOUT);
+            Node_IPS.remove(IP_TOUT);
         }
     }
 
