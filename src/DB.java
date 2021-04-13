@@ -35,9 +35,11 @@ public class DB {
             }
             catch (IOException IOE){
                 System.out.println("IOEXEPTION1");
+                System.out.println("ERROR: "+ IOE);
             }
             catch (ClassNotFoundException CNFE){
                 System.out.println("Class Not Found Exeption");
+                System.out.println("ERROR: "+ CNFE);
             }
         }
     }
