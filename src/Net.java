@@ -1,5 +1,7 @@
 import com.sun.jdi.ArrayReference;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -247,6 +249,61 @@ public class Net {
 
         }catch (Exception ex){
 
+        }
+    }
+
+    public static void Network_Manager(){
+        ArrayList<String> commands = new ArrayList<String>();
+        while(true){
+            try{
+                ServerSocket serverSocket = new ServerSocket(6500);
+                Socket socket = serverSocket.accept();
+
+                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+
+                String Request = (String) objectInputStream.readObject();
+
+                if(Request.matches("UPDATE_NODE")){
+                    commands.add("/bin/sh");
+                    commands.add("systemctl stop dnsnode");
+                    commands.add("killall -9 java");
+                    commands.add("cd ~/github/*/dist/");
+                    commands.add("git pull");
+                }
+                if(Request.matches("REBOOT")){
+                    commands.add("/bin/sh");
+                    commands.add("restart");
+                }
+
+                ProcessBuilder pb = new ProcessBuilder(commands);
+                pb.redirectErrorStream(true);
+                Process process = pb.start();
+
+                StringBuilder out = new StringBuilder();
+                BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line = null, previous = null;
+                while ((line = br.readLine()) != null)
+                    if (!line.equals(previous)) {
+                        previous = line;
+                        out.append(line).append('\n');
+                        System.out.println(line);
+                    }
+                //Check result
+                if (process.waitFor() == 0) {
+                    System.out.println("Success!");
+                    System.exit(0);
+                }
+                //Abnormal termination: Log command parameters and output and throw ExecutionException
+                System.err.println(commands);
+                System.err.println(out.toString());
+                objectInputStream.close();
+                objectOutputStream.close();
+                socket.close();
+                serverSocket.close();
+            }catch (Exception ex){
+
+            }
         }
     }
 
