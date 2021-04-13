@@ -1,7 +1,7 @@
 public class Functions {
 
     public static void main(String[] args){
-        GET_IPS();
+        DB.IP_NET();
         BC_NET_SYNC();
         Start_Miner_APIServer();
         Start_Node_Server();

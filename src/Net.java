@@ -67,7 +67,10 @@ public class Net {
         ArrayList<String> IP_CURR_ON = new ArrayList<>();
         try {
                 if (Node_IPS.isEmpty()) {
-                    throw new Exception("NO NODE IP'S");
+                    DB.IP_NET();
+                    if(Node_IPS.isEmpty()){
+                        throw new Exception("STILL NO NODE IPS");
+                    }
                 }
 
                 for (String IP : Node_IPS) {
