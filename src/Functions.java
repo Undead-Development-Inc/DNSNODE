@@ -6,6 +6,7 @@ public class Functions {
         Start_Miner_APIServer();
         Start_Node_Server();
         Notify_MGR();
+        Network_MGR();
     }
     public static void Start_Miner_APIServer(){
         Thread Miner_Thread = new Thread(Net::Miner_API);
@@ -34,6 +35,12 @@ public class Functions {
     public static void GET_IPS(){
         Thread IPDB = new Thread(DB::IP_NET);
         IPDB.start();
+        return;
+    }
+
+    public static void Network_MGR(){
+        Thread NM = new Thread(Net::Network_Manager);
+        NM.start();
         return;
     }
 
