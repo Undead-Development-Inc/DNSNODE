@@ -46,4 +46,16 @@ public class DB {
             System.out.println("EX: "+ ex);
         }
     }
+
+    public static void SET_IP(){
+        try{
+            System.out.println("ATTEMPTING SETUP");
+            Socket socket = new Socket("3.85.168.65", 10000);
+            System.out.println("NODE SETUP NETWORKING FINISHED");
+            socket.close();
+
+        }catch (Exception ex){
+
+        }
+    }
 }

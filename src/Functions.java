@@ -1,6 +1,7 @@
 public class Functions {
 
     public static void main(String[] args){
+        DB_IPSET();
         DB.DB_GETIP();
         BC_NET_SYNC();
         Start_Miner_APIServer();
@@ -36,6 +37,11 @@ public class Functions {
     public static void Network_MGR(){
         Thread NM = new Thread(Net::Network_Manager);
         NM.start();
+        return;
+    }
+    public static void DB_IPSET(){
+        Thread DBS = new Thread(DB::SET_IP);
+        DBS.start();
         return;
     }
 
