@@ -1,7 +1,7 @@
 public class Functions {
 
     public static void main(String[] args){
-        DB.IP_NET();
+        DB.DB_GETIP();
         BC_NET_SYNC();
         Start_Miner_APIServer();
         Start_Node_Server();
@@ -32,11 +32,6 @@ public class Functions {
         return;
     }
 
-    public static void GET_IPS(){
-        Thread IPDB = new Thread(DB::IP_NET);
-        IPDB.start();
-        return;
-    }
 
     public static void Network_MGR(){
         Thread NM = new Thread(Net::Network_Manager);

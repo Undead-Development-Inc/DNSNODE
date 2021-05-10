@@ -10,7 +10,8 @@ public class Settings {
     public static int NET_NODE_CLIENT = 9001;
     public static int S_NET_NODE_CLIENT = 9002;
     public static int Miner_API = 9003;
-
+    public static String DB_USR = "u433204257_matthew3903";
+    public static String DB_PWS = "Booboo3903@598329002";
 
     //////////////////////////////////////////////////////////
     ///////FOR GUI INTERFACES////////////////////////////////

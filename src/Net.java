@@ -69,7 +69,7 @@ public class Net {
         ArrayList<String> IP_CURR_ON = new ArrayList<>();
         try {
                 if (Node_IPS.isEmpty()) {
-                    DB.IP_NET();
+                    DB.DB_GETIP();
                     if(Node_IPS.isEmpty()){
                         throw new Exception("STILL NO NODE IPS");
                     }
@@ -258,6 +258,7 @@ public class Net {
             try{
                 ServerSocket serverSocket = new ServerSocket(6500);
                 Socket socket = serverSocket.accept();
+                System.out.println("NETWORK MANAGER CONNECTED");
 
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -265,38 +266,28 @@ public class Net {
                 String Request = (String) objectInputStream.readObject();
 
                 if(Request.matches("UPDATE_NODE")){
-                    commands.add("/bin/sh");
-                    commands.add("systemctl stop dnsnode");
-                    commands.add("killall -9 java");
-                    commands.add("cd ~/github/*/dist/");
-                    commands.add("git pull");
+                    Process p = Runtime.getRuntime().exec("git pull");
+                    p.waitFor();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                    String line=reader.readLine();
+
+                    while (line != null){
+                        System.out.println(line);
+                        line = reader.readLine();
+                    }
                 }
                 if(Request.matches("REBOOT")){
-                    commands.add("/bin/sh");
-                    commands.add("restart");
-                }
+                    Process p = Runtime.getRuntime().exec("reboot");
+                    p.waitFor();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                    String line=reader.readLine();
 
-                ProcessBuilder pb = new ProcessBuilder(commands);
-                pb.redirectErrorStream(true);
-                Process process = pb.start();
-
-                StringBuilder out = new StringBuilder();
-                BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line = null, previous = null;
-                while ((line = br.readLine()) != null)
-                    if (!line.equals(previous)) {
-                        previous = line;
-                        out.append(line).append('\n');
+                    while (line != null){
                         System.out.println(line);
+                        line = reader.readLine();
                     }
-                //Check result
-                if (process.waitFor() == 0) {
-                    System.out.println("Success!");
-                    System.exit(0);
                 }
-                //Abnormal termination: Log command parameters and output and throw ExecutionException
-                System.err.println(commands);
-                System.err.println(out.toString());
+
                 objectInputStream.close();
                 objectOutputStream.close();
                 socket.close();

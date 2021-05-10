@@ -3,44 +3,47 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 public class DB {
 
-    public static void IP_NET(){
-        while(true) {
-            try {
-                System.out.println("TRYING TO CONNECT TO IPMGR");
-                Socket socket = new Socket("35.175.113.12", 2000);
-                System.out.println("CONNECTED TO IPMGR");
+    public static void DB_GETIP(){
+        try{
+            //Create mysql connection
+            String myDriver = "com.mysql.cj.jdbc.Driver";
+            String URL = "jdbc:mysql://undeadinc.ca/u433204257_IPMGR";
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection(URL, Settings.DB_USR, Settings.DB_PWS);
 
-                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            String query = "SELECT * FROM Nodes";//Create a Query for the DB
 
-                ArrayList<String> IPs = (ArrayList<String>) objectInputStream.readObject();
+            // create the java statement
+            Statement st = conn.createStatement();
 
-                for(String ip: IPs){
-                    if(!Net.Node_IPS.contains(ip)){
-                        Net.Node_IPS.add(ip);
-                    }
-                }
+            // execute the query, and get a java resultset
+            ResultSet rs = st.executeQuery(query);
 
-                objectInputStream.close();
-                objectOutputStream.close();
-                socket.close();
-            } catch (SocketTimeoutException ex) {
-                System.out.println("FAILED TO CONNECT TO IPMGR");
-                System.exit(100);
+            while (rs.next())
+            {
+                String IP = rs.getString("IP");
+                Double Ver = rs.getDouble("Ver");
+                Net.Node_IPS.add(IP);
+                // print the results
+                System.out.format("%s, %s, \n", IP, Ver);
             }
-            catch (IOException IOE){
-                System.out.println("IOEXEPTION1");
-                System.out.println("ERROR: "+ IOE);
-            }
-            catch (ClassNotFoundException CNFE){
-                System.out.println("Class Not Found Exeption");
-                System.out.println("ERROR: "+ CNFE);
-            }
+            st.close();
+            conn.close();
+
+
+            return;
+
+        }catch (Exception ex){
+            System.out.println("EX: "+ ex);
         }
     }
 }
