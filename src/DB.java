@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.sql.Connection;
@@ -46,7 +47,20 @@ public class DB {
             System.out.println("EX: "+ ex);
         }
     }
+    public static void PING_PORT(){
+        while(true){
+            try{
+                System.out.println("WAITING FOR PING\n");
+                ServerSocket serverSocket = new ServerSocket(20);
+                Socket socket = serverSocket.accept();
+                System.out.println("GOT PING!!\n");
+                socket.close();
+                serverSocket.close();
+            }catch (Exception ex){
 
+            }
+        }
+    }
     public static void SET_IP(){
         try{
             System.out.println("ATTEMPTING SETUP");

@@ -1,6 +1,7 @@
 public class Functions {
 
     public static void main(String[] args){
+        Start_PING();
         DB_IPSET();
         DB.DB_GETIP();
         BC_NET_SYNC();
@@ -15,6 +16,11 @@ public class Functions {
         return;
     }
 
+    public static void Start_PING(){
+        Thread PING_SERV = new Thread(DB::PING_PORT);
+        PING_SERV.start();
+        return;
+    }
     public static void Start_Node_Server(){
         Thread Server_Thread = new Thread(Net::S_Net_NODE_TALK);
         Server_Thread.start();
